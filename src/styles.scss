@@ -1,0 +1,44 @@
+.ngx-pagination li {
+  border: 5px solid #ddd;
+  text-decoration: none !important;
+  font-size: 1.2em;
+  border-radius: 15px !important;
+
+}
+
+.ngx-pagination {
+  margin: 0px;
+  padding: 0px
+}
+
+.ngx-pagination .current {
+  background: #E31937 !important
+}
+
+li a:hover {
+  text-decoration: none !important;
+}
+
+.ngx-pagination a:after,
+li:after,
+a:before,
+li:before {
+  content: none !important;
+}
+
+.ngx-pagination a:active {
+  color: #E31937;
+  outline: none
+}
+
+.ngx-pagination a:visited {
+  text-decoration: none;
+}
+
+.modal-backdrop.show {
+  opacity: 0.9;
+}
+
+.btn-danger {
+  background-color: #E31937
+}

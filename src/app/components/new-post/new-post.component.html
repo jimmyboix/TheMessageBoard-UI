@@ -1,0 +1,44 @@
+<div class="card text-white bg-dark ">
+  <div class="card-header text-center"><b>
+      <h5>New Post</h5>
+    </b></div>
+  <div class="card-body">
+    <form [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="postTitle" class="d-flex">Title <small
+            class="form-text text-muted ml-auto"><code>{{f.postTitle.value.length}}</code> <span class="characters"> /
+            </span>
+            <code>{{titleMaxLength}}</code>
+            <span class="characters">&nbsp;characters&nbsp;</span></small></label>
+        <input type="text" formControlName="postTitle" class="form-control" placeholder="Enter a Title"
+          [ngClass]="{ 'is-invalid': submitted && f.postTitle.errors }" maxlength="{{titleMaxLength}}" />
+
+        <div *ngIf="submitted && f.postTitle.errors" class="invalid-feedback">
+          <div *ngIf="f.postTitle.errors.required">Title is required</div>
+        </div>
+        <br>
+        <label for="postText" class="d-flex">Content <small
+            class="form-text text-muted ml-auto"><code>{{f.postText.value.length}}</code> <span class="characters"> /
+            </span>
+            <code>{{contentMaxLength}}</code>
+            <span class="characters">&nbsp;characters&nbsp;</span></small></label>
+        <textarea type="textarea" formControlName="postText" class="form-control" placeholder="What's on your mind?"
+          [ngClass]="{ 'is-invalid': submitted && f.postText.errors }" maxlength="{{contentMaxLength}}"
+          rows="6"></textarea>
+        <div *ngIf="submitted && f.postText.errors" class="invalid-feedback">
+          <div *ngIf="f.postText.errors.required">Content is required</div>
+        </div>
+        <br>
+        <label for="anonSwitch" class="d-flex">Post Anonymously&nbsp;<fa-icon icon="info-circle" data-placement="right"
+            tooltip="The post will not contain your username so will be seen as anonymous to others">
+          </fa-icon><small class="form-text text-muted ml-auto"></small></label>
+        <input type="checkbox" formControlName="anonSwitch" style="width: 20px; height: 20px; margin-bottom: 20px;" />
+        <br>
+        <button [disabled]="loading" class="btn btn-block btn-danger float-right">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Submit <fa-icon icon="paper-plane"></fa-icon>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <ul class="navbar-nav mr-auto">
+
+  </ul>
+  <ul *ngIf="currentUser" class="navbar-nav mx-auto">
+    <span class="text-white">The Message Board</span>
+  </ul>
+  <ul *ngIf="currentUser" class="navbar-nav ml-auto">
+    <a class="btn btn-danger" style="color: white; cursor: pointer;" (click)="logout()">
+      <fa-icon icon="user-slash"></fa-icon> Logout
+      <span class="badge badge-pill badge-light">{{ user.data.username }}</span>
+    </a>
+  </ul>
+</nav>
+
+<!-- main content container -->
+<div class="jumbotron" style="margin-bottom: 0;">
+  <div class="container-flex">
+    <div class="row" style="margin-top: -20px;">
+      <div class="col-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="page-footer font-small">
+  <div class="footer-copyright text-center py-3">© {{year}} Copyright:
+    James Hendrie
+  </div>
+</footer>

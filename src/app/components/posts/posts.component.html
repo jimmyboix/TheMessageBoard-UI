@@ -1,0 +1,115 @@
+<div class="card border-dark mb-3 shadow-lg rounded">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-9">
+        <h5>{{postTitle}}</h5>
+      </div>
+      <div class="col-3">
+        <div class="float-right">
+          <div class="float-right" *ngIf="!isAnon; else Anon">
+            <fa-icon icon="user-alt" style="color: gray"></fa-icon>
+            <span class="text-muted">&nbsp;{{creator.username}}</span>
+          </div>
+          <ng-template #Anon>
+            <div class="float-right">
+              <fa-icon icon="user-secret" style="color: gray"></fa-icon>
+              <span class="text-muted">&nbsp;[Hidden]</span>
+            </div>
+          </ng-template>
+          <br>
+          <span class="badge badge-pill badge-dark">{{createdAt | date :'medium'}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-body text-dark">
+    <p class="card-text" *ngIf="link"><a href="{{link}}" target="_blank">{{link}}</a>
+    </p>
+    <p class="card-text" *ngIf="text">{{text}}
+    </p>
+  </div>
+  <div class="card-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="openModal(template)">
+      <fa-icon *ngIf="isLocked" icon="lock"></fa-icon>
+      Comments <span class="badge badge-light">{{comments?.length}}</span>
+    </button>
+    <div class="float-right">
+      <div>
+        <button type="button" class="btn btn-danger btn-sm" (click)="deletePost()"
+          *ngIf="creator.username === user.data.username">
+          <fa-icon icon="trash-alt" style="color: white"></fa-icon>
+        </button>&nbsp;
+        <span class="badge badge-pill badge-secondary">{{postId}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #template>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{postTitle}}</h4>
+      <button type="button" class="close pull-right" (click)="modalRef.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="newCommentForm" (ngSubmit)="onSubmit()" style="margin-bottom: 30px">
+        <div class="form-group">
+          <label for="commentPost" class="d-flex">Add Comment <small
+              class="form-text text-muted ml-auto"><code>{{f.commentPost.value.length}}</code> <span class="characters">
+                /
+              </span>
+              <code>{{commentPostMaxLength}}</code>
+              <span class="characters">&nbsp;characters&nbsp;</span></small></label>
+          <div class="input-group">
+            <input type="text" formControlName="commentPost" class="form-control" placeholder="Enter a Comment"
+              [ngClass]="{ 'is-invalid': submitted && f.commentPost.errors }" maxlength="{{commentPostMaxLength}}" />
+            <div class="input-group-append">
+              <div class="input-group-text">
+                Anonymous&nbsp;
+                <input type="checkbox" formControlName="anonComment" style="width: 20px; height: 20px;"
+                  aria-label="Checkbox for following text input">
+              </div>
+              <button [disabled]="loading || isLocked" class="btn btn-block btn-danger float-right">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Submit <fa-icon *ngIf="!isLocked" icon="paper-plane"></fa-icon>
+                <fa-icon *ngIf="isLocked" icon="lock"></fa-icon>
+              </button>
+            </div>
+            <div *ngIf="submitted && f.commentPost.errors" class="invalid-feedback">
+              <div *ngIf="f.commentPost.errors.required">Comment is required</div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="container" style="max-height:500px; overflow: auto;">
+        <ul class="list-group">
+          <span *ngFor="let comment of comments">
+            <li class="media" *ngIf="!comment.isAnon; else Anon">
+              <fa-icon icon="user-alt" style="color: gray"></fa-icon>
+              <div class="media-body">
+                <h6 class="mt-0 mb-1 text-muted">&nbsp;{{comment._creator.username}}
+                  <span class="badge badge-pill badge-secondary">{{comment.createdAt | date :'medium'}}</span></h6>
+                <span class="text-dark" style="font-size: 1.1em">{{comment.text}}</span>
+              </div>
+            </li>
+            <ng-template #Anon>
+              <li class="media">
+                <fa-icon icon="user-secret" style="color: gray"></fa-icon>
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1 text-muted">&nbsp;[Hidden]
+                    <span class="badge badge-pill badge-secondary">{{comment.createdAt | date :'medium'}}</span></h6>
+                  <span class="text-dark" style="font-size: 1.1em">{{comment.text}}</span>
+                </div>
+              </li>
+            </ng-template>
+            <hr>
+          </span>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>
